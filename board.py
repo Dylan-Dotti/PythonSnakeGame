@@ -15,8 +15,8 @@ class Board(tk.Frame):
         self._grid = [list() for i in range(gridSize)]
         super(Board, self).__init__(*args, **kwargs)
 
-        for r in range(len(gridSize)):
-            for c in range(len(gridSize)):
+        for r in range(gridSize):
+            for c in range(gridSize):
                 pass
 
     def getAt(self, row, col):
