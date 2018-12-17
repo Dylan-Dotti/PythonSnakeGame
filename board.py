@@ -9,7 +9,7 @@ class Board(tk.Frame):
 
     def __init__(self, *args, **kwargs):
         #init grid
-        if kwargs['grid_size']:
+        if 'grid_size' in kwargs:
             self._grid_size = kwargs['grid_size']
             kwargs.pop('grid_size')
         else:
@@ -19,7 +19,7 @@ class Board(tk.Frame):
 
         for r in range(self._grid_size):
             for c in range(self._grid_size):
-                new_tile = tl.Tile(self, bg="grey")
+                new_tile = tl.Tile(r, c, self)
                 tk.Grid.rowconfigure(self, r, weight=1)
                 tk.Grid.columnconfigure(self, c, weight=1)
                 new_tile.grid(row=r, column=c, padx=0.5, pady=0.5, sticky=tk.NSEW)
