@@ -7,13 +7,17 @@ class GameObject(object):
         super(GameObject, self).__init__(*args, **kwargs)
         self._occupied_tile = None
         self._default_color = "purple"
-        self._color = default_color
+        self.color = self._default_color
 
     def get_occupied_tile(self):
         return self._occupied_tile
 
-    def set_occupied_tile(self, tile):
+    def move_to_tile(self, tile):
+        if self._occupied_tile is not None:
+            self._occupied_tile.set_occupant(None)
         self._occupied_tile = tile
+        if self._occupied_tile is not None:
+            self._occupied_tile.set_occupant(self)
 
     def get_row(self):
         return self._occupied_tile.get_row()
@@ -23,6 +27,7 @@ class GameObject(object):
 
     def set_color(self, color):
         if color is None:
-            self._color = self._default_color
-        else:
-            self._color = color
+            color = self._default_color
+        self.color = color
+        if self._occupied_tile is not None:
+            self._occupied_tile.set_color(color)

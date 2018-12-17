@@ -28,5 +28,8 @@ class Board(tk.Frame):
     def get_grid_size(self):
         return self._grid_size
 
+    def index_in_range(self, row, col):
+        return 0 <= row < self._grid_size and 0 <= col <= self._grid_size
+
     def get_tile_at(self, row, col):
         return self._grid[row][col]

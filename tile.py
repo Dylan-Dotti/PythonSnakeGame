@@ -31,9 +31,12 @@ class Tile(tk.Label):
 
     def set_occupant(self, game_obj):
         self._occupant = game_obj
+        if game_obj is None:
+            self.set_color(None)
+        else:
+            self.set_color(game_obj.color)
 
     def set_color(self, color):
+        if color is None:
+            color = self._default_color
         self.config(bg=color)
-
-    def update(self):
-        pass

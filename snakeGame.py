@@ -9,6 +9,8 @@ import snake
 if __name__ == "__main__":
 
     def update(ms_delay):
+        plSnake.update()
+        print(plSnake._direction)
         root.after(ms_delay, update, ms_delay)
 
 
@@ -20,6 +22,17 @@ if __name__ == "__main__":
         y = (screen_height / 2) - (height / 2)
         root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
+    def pressed_w(event):
+        plSnake.set_direction('N')
+
+    def pressed_a(event):
+        plSnake.set_direction('W')
+
+    def pressed_s(event):
+        plSnake.set_direction('S')
+
+    def pressed_d(event):
+        plSnake.set_direction('E')
 
     root = tk.Tk()
     root.title('Snake')
@@ -30,7 +43,12 @@ if __name__ == "__main__":
     gameBoard = board.Board(grid_size=10, bg="black")
     gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
 
-    plSnake = snake.Snake()
+    spawnPositions = [(5, 5), (5, 6), (5, 7)]
+    plSnake = snake.Snake(gameBoard, spawnPositions)
 
-    root.after(0, update, 1000)
+    root.bind("<w>", pressed_w)
+    root.bind("<a>", pressed_a)
+    root.bind("<s>", pressed_s)
+    root.bind("<d>", pressed_d)
+    root.after(1000, update, 1000)
     root.mainloop()
