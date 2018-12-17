@@ -2,15 +2,17 @@
 #main game file
 
 import tkinter as tk
-from tkinter import ttk
 import board
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title('Hello Tkinter')
-    root.geometry('800x600')
+    root.title('Snake')
+    tk.Grid.rowconfigure(root, 0, weight=1)
+    tk.Grid.columnconfigure(root, 0, weight=1)
+    root.geometry('600x600')
 
-    gameBoard = board.Board(gridSize=10)
+    gameBoard = board.Board(gridSize=10, bg="black")
+    gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
 
     root.mainloop()
