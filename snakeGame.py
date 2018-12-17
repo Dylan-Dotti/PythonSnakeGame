@@ -3,6 +3,7 @@
 
 import tkinter as tk
 import board
+import snake
 
 
 if __name__ == "__main__":
@@ -28,6 +29,8 @@ if __name__ == "__main__":
 
     gameBoard = board.Board(grid_size=10, bg="black")
     gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
+
+    plSnake = snake.Snake()
 
     root.after(0, update, 1000)
     root.mainloop()
