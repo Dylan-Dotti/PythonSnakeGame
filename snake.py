@@ -102,6 +102,12 @@ class Snake(object):
                 occ_tiles.append(part.get_occupied_tile())
         return occ_tiles
 
+    def occupies_position(self, row, col):
+        for part in self._body:
+            if part.get_row() == row and part.get_column() == col:
+                return True
+        return False
+
     def spawn_at(self, positions):
         self.remove_from_board()
         self._body = []

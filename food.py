@@ -1,4 +1,4 @@
-#food.py
+# food.py
 
 import gameObject as go
 

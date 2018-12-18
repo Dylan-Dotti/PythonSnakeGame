@@ -1,4 +1,4 @@
-#python gameObject.py
+# python gameObject.py
 
 
 class GameObject(object):
@@ -33,5 +33,6 @@ class GameObject(object):
         if color is None:
             color = self._default_color
         self.color = color
-        if self._occupied_tile is not None:
+        if self._occupied_tile is not None and \
+                self._occupied_tile.get_occupant() == self:
             self._occupied_tile.set_color(color)

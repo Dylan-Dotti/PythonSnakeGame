@@ -1,5 +1,5 @@
-#tile.py
-#tiles for game board
+# tile.py
+# tiles for game board
 
 import tkinter as tk
 

@@ -1,19 +1,21 @@
-#board.py
+# board.py
 
 import tkinter as tk
+import random
 import tile
 import snake
 
 
 class Board(tk.Frame):
 
-    def __init__(self, grid_size=10, *args, **kwargs):
+    def __init__(self, rows=10, cols=10, *args, **kwargs):
         super(Board, self).__init__(*args, **kwargs)
-        self._grid_size = grid_size
-        self._grid = [list() for i in range(self._grid_size)]
+        self.num_rows = rows
+        self.num_columns = cols
+        self._grid = [list() for i in range(self.num_rows)]
 
-        for r in range(self._grid_size):
-            for c in range(self._grid_size):
+        for r in range(self.num_rows):
+            for c in range(self.num_columns):
                 new_tile = tile.Tile(r, c, self)
                 tk.Grid.rowconfigure(self, r, weight=1)
                 tk.Grid.columnconfigure(self, c, weight=1)
@@ -41,7 +43,7 @@ class Board(tk.Frame):
         return self._grid_size
 
     def index_in_range(self, row, col):
-        return 0 <= row < self._grid_size and 0 <= col < self._grid_size
+        return 0 <= row < self.num_rows and 0 <= col < self.num_columns
 
     def get_tile_at(self, row, col):
         return self._grid[row][col]
@@ -64,7 +66,9 @@ class Board(tk.Frame):
     def add_food_at(self, food, row, col):
         spawn_tile = self.get_tile_at(row, col)
         if spawn_tile in self.player_snake.get_occupied_tiles():
-            raise ValueError('snake occupies that position')
+            raise ValueError('snake occupies (' + row + ', ' + col + ')')
+        if self.has_food_at(row, col):
+            raise ValueError('food already occupies (' + row + ', ' + col + ')')
         self.food_positions[food] = (row, col)
         food.move_to_tile(spawn_tile)
 
@@ -80,4 +84,15 @@ class Board(tk.Frame):
         return False
 
     def set_food_eaten(self, food):
+        self.spawn_food_random(food)
+
+    def spawn_food_random(self, food):
+        # add check for full board
         self.remove_food(food)
+        while True:
+            new_row = random.randint(0, self.num_rows - 1)
+            new_col = random.randint(0, self.num_columns - 1)
+            if not self.player_snake.occupies_position(new_row, new_col) and \
+                    not self.has_food_at(new_row, new_col):
+                break
+        self.add_food_at(food, new_row, new_col)

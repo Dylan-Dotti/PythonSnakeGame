@@ -1,5 +1,5 @@
-#snakeGame.py
-#main game file
+# snakeGame.py
+# main game file
 
 import tkinter as tk
 import board
@@ -33,15 +33,19 @@ if __name__ == "__main__":
     def pressed_d(event):
         gameBoard.handle_key_event('d')
 
+    def on_player_death():
+        pass
+
     root = tk.Tk()
     root.title('Snake')
     tk.Grid.rowconfigure(root, 0, weight=1)
     tk.Grid.columnconfigure(root, 0, weight=1)
 
-    board_size = 12
-    center_window(60 * board_size, 60 * board_size)
+    num_rows = 12
+    num_cols = 20
+    center_window(60 * num_cols, 60 * num_rows)
 
-    gameBoard = board.Board(board_size, bg="black")
+    gameBoard = board.Board(num_rows, num_cols, bg="black")
     gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
 
     spawnPositions = [(5, 5), (5, 6), (5, 7), (5, 8)]
