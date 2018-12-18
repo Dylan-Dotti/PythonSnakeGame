@@ -9,11 +9,15 @@ class GameObject(object):
         self._default_color = "purple"
         self.color = self._default_color
 
+    def occupies_tile(self):
+        return self._occupied_tile is not None
+
     def get_occupied_tile(self):
         return self._occupied_tile
 
     def move_to_tile(self, tile):
-        if self._occupied_tile is not None:
+        if self._occupied_tile is not None and \
+                self._occupied_tile.get_occupant() == self:
             self._occupied_tile.set_occupant(None)
         self._occupied_tile = tile
         if self._occupied_tile is not None:

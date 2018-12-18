@@ -16,6 +16,7 @@ class Snake(object):
         self._body = []
         self._prev_direction = 'W'
         self._direction = 'W'
+        self._grows_remaining = 0
 
         for row, col in init_positions:
             new_part = Snake.SnakePart()
@@ -31,7 +32,7 @@ class Snake(object):
             self.move_forward()
 
     def can_move_forward(self):
-        if len(self._body) == 0:
+        if len(self) == 0:
             return False
         row = self._body[0].get_row()
         col = self._body[0].get_column()
@@ -50,6 +51,7 @@ class Snake(object):
         head_col = head.get_column()
         prev_tile = self._parent_board.get_tile_at(head_row, head_col)
 
+        #move head
         if self._direction == 'N':
             head.move_to_tile(self._parent_board.get_tile_at(head_row - 1, head_col))
         elif self._direction == 'E':
@@ -59,11 +61,19 @@ class Snake(object):
         elif self._direction == 'W':
             head.move_to_tile(self._parent_board.get_tile_at(head_row, head_col - 1))
 
+        #move body
         for i in range(1, len(self)):
             part = self._body[i]
             target_tile = prev_tile
             prev_tile = part.get_occupied_tile()
             part.move_to_tile(target_tile)
+
+        #grow if possible
+        if self._grows_remaining > 0:
+            new_part = Snake.SnakePart()
+            new_part.move_to_tile(prev_tile)
+            self._body.append(new_part)
+            self._grows_remaining -= 1
 
         self._prev_direction = self._direction
 
@@ -81,6 +91,13 @@ class Snake(object):
     def set_direction(self, direction):
         if self.can_face_direction(direction):
             self._direction = direction
+
+    def get_occupied_tiles(self):
+        occ_tiles = []
+        for part in self._body:
+            if part.occupies_tile():
+                occ_tiles.append(part.get_occupied_tile())
+        return occ_tiles
 
     class SnakePart(go.GameObject):
 
