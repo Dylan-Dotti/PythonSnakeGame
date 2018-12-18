@@ -4,6 +4,7 @@
 import tkinter as tk
 import board
 import snake
+import food
 
 
 if __name__ == "__main__":
@@ -11,7 +12,6 @@ if __name__ == "__main__":
     def update(ms_delay):
         gameBoard.update()
         root.after(ms_delay, update, ms_delay)
-
 
     def center_window(width=600, height=600):
         screen_width = root.winfo_screenwidth()
@@ -37,13 +37,19 @@ if __name__ == "__main__":
     root.title('Snake')
     tk.Grid.rowconfigure(root, 0, weight=1)
     tk.Grid.columnconfigure(root, 0, weight=1)
-    center_window()
 
-    gameBoard = board.Board(10, bg="black")
+    board_size = 12
+    center_window(60 * board_size, 60 * board_size)
+
+    gameBoard = board.Board(board_size, bg="black")
     gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
 
     spawnPositions = [(5, 5), (5, 6), (5, 7), (5, 8)]
     gameBoard.spawn_snake_at(spawnPositions)
+
+    gameBoard.add_food_at(food.Orange(), 3, 3)
+    gameBoard.add_food_at(food.Orange(), 2, 8)
+    gameBoard.add_food_at(food.Orange(), 8, 2)
 
     root.bind("<w>", pressed_w)
     root.bind("<a>", pressed_a)
@@ -53,5 +59,5 @@ if __name__ == "__main__":
     root.bind("<Left>", pressed_a)
     root.bind("<Down>", pressed_s)
     root.bind("<Right>", pressed_d)
-    root.after(1000, update, 500)
+    root.after(1000, update, 400)
     root.mainloop()

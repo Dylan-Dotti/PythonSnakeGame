@@ -1,4 +1,4 @@
-#snake.py
+# snake.py
 
 import gameObject as go
 
@@ -22,7 +22,7 @@ class Snake(object):
         return len(self._body)
 
     def update(self):
-        if self.can_move_forward():
+        if self._parent_board is not None and self.can_move_forward():
             self.move_forward()
 
     def can_move_forward(self):
@@ -45,7 +45,7 @@ class Snake(object):
         head_col = head.get_column()
         prev_tile = self._parent_board.get_tile_at(head_row, head_col)
 
-        #move head
+        # move head
         if self._direction == 'N':
             head.move_to_tile(self._parent_board.get_tile_at(head_row - 1, head_col))
         elif self._direction == 'E':
@@ -55,19 +55,28 @@ class Snake(object):
         elif self._direction == 'W':
             head.move_to_tile(self._parent_board.get_tile_at(head_row, head_col - 1))
 
-        #move body
+        # move body
         for i in range(1, len(self)):
             part = self._body[i]
             target_tile = prev_tile
             prev_tile = part.get_occupied_tile()
             part.move_to_tile(target_tile)
 
-        #grow if possible
+        # grow if possible
         if self._grows_remaining > 0:
             new_part = Snake.SnakePart()
             new_part.move_to_tile(prev_tile)
             self._body.append(new_part)
             self._grows_remaining -= 1
+
+        # eat food
+        food_positions = self._parent_board.get_food_positions()
+        for fd in food_positions:
+            row, col = food_positions[fd]
+            if head.get_row() == row and head.get_column() == col:
+                self._grows_remaining += fd.grow_value
+                self._parent_board.set_food_eaten(fd)
+                break
 
         self._prev_direction = self._direction
 
@@ -105,6 +114,9 @@ class Snake(object):
     def remove_from_board(self):
         for part in self._body:
             part.move_to_tile(None)
+
+    def eat_food(self, food):
+        pass
 
     class SnakePart(go.GameObject):
 

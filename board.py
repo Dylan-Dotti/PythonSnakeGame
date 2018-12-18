@@ -8,7 +8,6 @@ import snake
 class Board(tk.Frame):
 
     def __init__(self, grid_size=10, *args, **kwargs):
-        #init grid
         super(Board, self).__init__(*args, **kwargs)
         self._grid_size = grid_size
         self._grid = [list() for i in range(self._grid_size)]
@@ -56,11 +55,18 @@ class Board(tk.Frame):
         self.player_snake = snake.Snake(self)
         self.player_snake.spawn_at(positions)
 
+    def get_food_positions(self):
+        """
+        :return: dict of food to (row, col) position
+        """
+        return self.food_positions
+
     def add_food_at(self, food, row, col):
         spawn_tile = self.get_tile_at(row, col)
         if spawn_tile in self.player_snake.get_occupied_tiles():
             raise ValueError('snake occupies that position')
         self.food_positions[food] = (row, col)
+        food.move_to_tile(spawn_tile)
 
     def remove_food(self, food):
         if food in self.food_positions:
@@ -73,5 +79,5 @@ class Board(tk.Frame):
                 return True
         return False
 
-    def get_food_positions(self):
-        return self.food_positions
+    def set_food_eaten(self, food):
+        self.remove_food(food)
