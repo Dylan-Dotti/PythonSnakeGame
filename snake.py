@@ -5,24 +5,18 @@ import gameObject as go
 
 class Snake(object):
 
-    def __init__(self, board, init_positions, *args, **kwargs):
+    def __init__(self, board):
         """
         :param board: parent game board
         :param init_positions: list of (r, c) tuples representing initial
         snake part positions
         """
-        super(Snake, self, *args, **kwargs)
+        super(Snake, self).__init__()
         self._parent_board = board
         self._body = []
         self._prev_direction = 'W'
         self._direction = 'W'
         self._grows_remaining = 0
-
-        for row, col in init_positions:
-            new_part = Snake.SnakePart()
-            spawn_tile = self._parent_board.get_tile_at(row, col)
-            new_part.move_to_tile(spawn_tile)
-            self._body.append(new_part)
 
     def __len__(self):
         return len(self._body)
@@ -98,6 +92,19 @@ class Snake(object):
             if part.occupies_tile():
                 occ_tiles.append(part.get_occupied_tile())
         return occ_tiles
+
+    def spawn_at(self, positions):
+        self.remove_from_board()
+        self._body = []
+        for row, col in positions:
+            new_part = Snake.SnakePart()
+            spawn_tile = self._parent_board.get_tile_at(row, col)
+            new_part.move_to_tile(spawn_tile)
+            self._body.append(new_part)
+
+    def remove_from_board(self):
+        for part in self._body:
+            part.move_to_tile(None)
 
     class SnakePart(go.GameObject):
 

@@ -9,7 +9,7 @@ import snake
 if __name__ == "__main__":
 
     def update(ms_delay):
-        plSnake.update()
+        gameBoard.update()
         root.after(ms_delay, update, ms_delay)
 
 
@@ -22,16 +22,16 @@ if __name__ == "__main__":
         root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
     def pressed_w(event):
-        plSnake.set_direction('N')
+        gameBoard.handle_key_event('w')
 
     def pressed_a(event):
-        plSnake.set_direction('W')
+        gameBoard.handle_key_event('a')
 
     def pressed_s(event):
-        plSnake.set_direction('S')
+        gameBoard.handle_key_event('s')
 
     def pressed_d(event):
-        plSnake.set_direction('E')
+        gameBoard.handle_key_event('d')
 
     root = tk.Tk()
     root.title('Snake')
@@ -39,11 +39,11 @@ if __name__ == "__main__":
     tk.Grid.columnconfigure(root, 0, weight=1)
     center_window()
 
-    gameBoard = board.Board(grid_size=10, bg="black")
+    gameBoard = board.Board(10, bg="black")
     gameBoard.grid(row=0, column=0, sticky=tk.NSEW)
 
     spawnPositions = [(5, 5), (5, 6), (5, 7), (5, 8)]
-    plSnake = snake.Snake(gameBoard, spawnPositions)
+    gameBoard.spawn_snake_at(spawnPositions)
 
     root.bind("<w>", pressed_w)
     root.bind("<a>", pressed_a)
