@@ -59,7 +59,6 @@ if __name__ == "__main__":
             self.game_board.handle_key_event('d')
 
         def on_player_death(self):
-            print('player death')
             time.sleep(2)
             self.game_board.destroy()
             self.spawn_game_board()
