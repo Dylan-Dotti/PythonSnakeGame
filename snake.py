@@ -22,8 +22,11 @@ class Snake(object):
         return len(self._body)
 
     def update(self):
-        if self._parent_board is not None and self.can_move_forward():
-            self.move_forward()
+        if self._parent_board is not None:
+            if self.can_move_forward():
+                self.move_forward()
+            else:
+                self._parent_board.on_snake_death()
 
     def can_move_forward(self):
         if len(self) == 0:
@@ -31,13 +34,17 @@ class Snake(object):
         row = self._body[0].get_row()
         col = self._body[0].get_column()
         if self._direction == 'N':
-            return self._parent_board.index_in_range(row - 1, col)
+            return self._parent_board.index_in_range(row - 1, col) and not \
+                   self.occupies_position(row - 1, col)
         elif self._direction == 'E':
-            return self._parent_board.index_in_range(row, col + 1)
+            return self._parent_board.index_in_range(row, col + 1) and not \
+                   self.occupies_position(row, col + 1)
         elif self._direction == 'S':
-            return self._parent_board.index_in_range(row + 1, col)
+            return self._parent_board.index_in_range(row + 1, col) and not \
+                   self.occupies_position(row + 1, col)
         elif self._direction == 'W':
-            return self._parent_board.index_in_range(row, col - 1)
+            return self._parent_board.index_in_range(row, col - 1) and not \
+                   self.occupies_position(row, col - 1)
 
     def move_forward(self):
         head = self._body[0]

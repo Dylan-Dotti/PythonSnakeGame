@@ -8,8 +8,9 @@ import snake
 
 class Board(tk.Frame):
 
-    def __init__(self, rows=10, cols=10, *args, **kwargs):
+    def __init__(self, rows=10, cols=10, snake_death_callback=None, *args, **kwargs):
         super(Board, self).__init__(*args, **kwargs)
+        self.snake_death_callback = snake_death_callback
         self.num_rows = rows
         self.num_columns = cols
         self._grid = [list() for i in range(self.num_rows)]
@@ -28,6 +29,9 @@ class Board(tk.Frame):
     def update(self):
         if self.player_snake is not None:
             self.player_snake.update()
+
+    def on_snake_death(self):
+        self.snake_death_callback()
 
     def handle_key_event(self, key):
         if key == 'w':

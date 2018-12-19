@@ -20,6 +20,6 @@ class Food(go.GameObject):
 class Orange(Food):
 
     def __init__(self, *args, **kwargs):
-        super(Orange, self).__init__(5, 2, *args, **kwargs)
+        super(Orange, self).__init__(5, 3, *args, **kwargs)
         self._default_color = "orange"
         self.set_color(self._default_color)
